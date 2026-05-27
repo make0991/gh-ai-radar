@@ -1,0 +1,67 @@
+# ============================================================
+# GitHub AI Coding Radar — 配置文件
+# 改这里就能调整扫描行为，不用动代码。
+# ============================================================
+
+# ---- 扫描范围：搜索用的 GitHub topics / 关键词 ----
+# 这是“扫什么”的核心。想扩大到前端/电商 AI 或整个 LLM 生态，
+# 往下面加 topic / 关键词即可。
+search:
+  # GitHub topic 标签（精准，噪音低，优先用这个）
+  topics:
+    - ai-agent
+    - llm
+    - code-generation
+    - coding-assistant
+    - mcp
+    - ai-coding
+    - agentic
+    - developer-tools
+    # —— 想扩范围，取消下面的注释或自己加 ——
+    # - frontend
+    # - ecommerce
+    # - rag
+    # - llmops
+
+  # 自由关键词（搜 name/description/readme，更广但噪音略高）
+  keywords:
+    - "ai coding"
+    - "code agent"
+    - "coding agent"
+    - "llm agent"
+
+# ---- 质量门槛：过滤掉低质量 / 僵尸项目 ----
+filters:
+  # 只看最近这么多天内“创建”的新项目（发现新星用）
+  created_within_days: 60
+  # 新项目至少要有多少 star（过滤没人认可的）
+  min_stars_new: 80
+  # 对“老但活跃”的成熟项目，star 门槛更高
+  min_stars_established: 800
+  # 最近这么多天内必须有 push，否则视为僵尸项目直接排除
+  active_within_days: 30
+  # 至少多少贡献者（1 人项目风险高，可设为 1 关掉此过滤）
+  min_contributors: 2
+
+# ---- 评分权重：决定排序。总分越高越靠前 ----
+# 改权重 = 改你心目中“高质量”的定义。
+scoring:
+  star_velocity_7d: 3.0      # 近 7 天 star 增速（爆发信号，权重最高）
+  recent_commit_freq: 2.0    # 近 30 天 commit 活跃度
+  total_stars_log: 1.0       # star 总量（取对数，避免巨无霸碾压一切）
+  contributors: 1.0          # 贡献者数量（社区健康度）
+  has_readme_docs: 0.5       # 有像样的 README/文档
+
+# ---- 报告设置 ----
+report:
+  top_n: 25                  # 报告里保留前多少个
+  output_dir: "reports"      # 报告输出目录
+  keep_history: true         # 是否保留历史报告（false 则只留最新）
+
+# ---- 运行设置 ----
+runtime:
+  # 单次扫描最多处理多少候选仓库（控制 API 用量 / 速度）
+  max_candidates: 200
+  # 是否对每个候选拉取详细的活性数据（star 增速、commit 频率等）
+  # 关掉会快很多但只能按 star 总量排序
+  fetch_detailed_metrics: true

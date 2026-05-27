@@ -1,0 +1,61 @@
+# ============================================================
+# GitHub AI Coding Radar — 配置（扩展版 / wider scope）
+# 在默认版基础上，纳入前端 / 电商方向的 AI 应用，
+# 并适度放宽新项目门槛，让更多早期项目进入视野。
+# 用法: python scripts/radar.py --config config.wide.yaml
+# ============================================================
+
+search:
+  topics:
+    # —— 核心 AI coding ——
+    - ai-agent
+    - llm
+    - code-generation
+    - coding-assistant
+    - mcp
+    - ai-coding
+    - agentic
+    - developer-tools
+    # —— 前端方向 ——
+    - frontend
+    - react
+    - ui-components
+    - design-tools
+    # —— 电商 / 应用层 AI ——
+    - ecommerce
+    - rag
+    - llm-application
+    - recommendation-system
+
+  keywords:
+    - "ai coding"
+    - "coding agent"
+    - "ai shopping"
+    - "ai storefront"
+    - "outfit recommendation"
+    - "product recommendation ai"
+
+filters:
+  # 范围更广 -> 适度放宽，避免漏掉早期项目
+  created_within_days: 90
+  min_stars_new: 50          # 比默认(80)低，让早期项目进来
+  min_stars_established: 600
+  active_within_days: 30
+  min_contributors: 2
+
+scoring:
+  # 范围广时更看重“增速”，用热度而非绝对体量来排优先级
+  star_velocity_7d: 3.5
+  recent_commit_freq: 2.0
+  total_stars_log: 0.8       # 略降，避免大项目挤掉小而精的新星
+  contributors: 1.0
+  has_readme_docs: 0.5
+
+report:
+  top_n: 30                  # 范围广 -> 多留一些
+  output_dir: "reports"
+  keep_history: true
+
+runtime:
+  max_candidates: 300        # 范围广 -> 多扫一些候选
+  fetch_detailed_metrics: true
