@@ -65,6 +65,8 @@ cat reports/latest.md
 ```
 （Slack/邮件同理，换成对应的 webhook 即可。）
 
+邮件发送使用 GitHub Secrets 中的 `MAIL_TO`，多个收件人用英文逗号分隔。
+
 ## 文件结构
 
 ```

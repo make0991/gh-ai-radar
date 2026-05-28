@@ -4,7 +4,7 @@
 依赖环境变量（在 GitHub Actions Secrets 里配置）:
   GMAIL_USER      你的 Gmail 地址（用来登录 SMTP 的发件账号）
   GMAIL_APP_PASS  Gmail 应用专用密码（16 位，不是登录密码！）
-  MAIL_TO         收件人地址
+  MAIL_TO         收件人地址，多个地址用英文逗号分隔
 """
 import os
 import sys
@@ -17,9 +17,13 @@ from pathlib import Path
 def main():
     user = os.environ.get("GMAIL_USER")
     app_pass = os.environ.get("GMAIL_APP_PASS")
-    to_addr = os.environ.get("MAIL_TO")
-    if not all([user, app_pass, to_addr]):
+    to_raw = os.environ.get("MAIL_TO")
+    if not all([user, app_pass, to_raw]):
         print("错误: 缺少 GMAIL_USER / GMAIL_APP_PASS / MAIL_TO 环境变量", file=sys.stderr)
+        sys.exit(1)
+    to_addrs = _parse_recipients(to_raw)
+    if not to_addrs:
+        print("错误: MAIL_TO 中没有有效收件人", file=sys.stderr)
         sys.exit(1)
 
     report_path = Path("reports/latest.md")
@@ -33,7 +37,7 @@ def main():
     msg = MIMEMultipart("alternative")
     msg["Subject"] = f"🛰️ AI Coding Radar — {today}"
     msg["From"] = user
-    msg["To"] = to_addr
+    msg["To"] = ", ".join(to_addrs)
 
     # 纯文本版（Markdown 原文，任何客户端都能读）
     msg.attach(MIMEText(body_md, "plain", "utf-8"))
@@ -49,12 +53,16 @@ def main():
 
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
         server.login(user, app_pass)
-        server.sendmail(user, [to_addr], msg.as_string())
-    print(f"✓ 报告已发送至 {to_addr}")
+        server.sendmail(user, to_addrs, msg.as_string())
+    print(f"✓ 报告已发送至 {', '.join(to_addrs)}")
 
 
 def _escape(s):
     return (s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
+
+
+def _parse_recipients(value):
+    return [addr.strip() for addr in value.split(",") if addr.strip()]
 
 
 if __name__ == "__main__":

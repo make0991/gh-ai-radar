@@ -2,11 +2,12 @@ name: AI Coding Radar
 
 on:
   schedule:
-    # 每天 UTC 01:00 跑一次（≈ 台北时间上午 9 点）。
+    # 每天 UTC 01:17 跑一次（≈ 北京时间上午 9:17）。
+    # 避开 GitHub Actions 整点高峰，降低 schedule 被延迟或丢弃的概率。
     # 想改频率就改这行 cron：
-    #   每周一次       -> "0 1 * * 1"
-    #   每周一三五     -> "0 1 * * 1,3,5"
-    - cron: "0 1 * * *"
+    #   每周一次       -> "17 1 * * 1"
+    #   每周一三五     -> "17 1 * * 1,3,5"
+    - cron: "17 1 * * *"
   workflow_dispatch: {}   # 允许手动触发（Actions 页面点按钮即可）
 
 permissions:
