@@ -56,6 +56,7 @@ scoring:
 report:
   top_n: 25                  # 报告里保留前多少个
   output_dir: "reports"      # 报告输出目录
+  sent_state_file: "sent-projects.json"  # 已发项目记录，用于避免重复发送
   keep_history: true         # 是否保留历史报告（false 则只留最新）
 
 # ---- 运行设置 ----

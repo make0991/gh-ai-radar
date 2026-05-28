@@ -54,6 +54,7 @@ scoring:
 report:
   top_n: 30                  # 范围广 -> 多留一些
   output_dir: "reports"
+  sent_state_file: "sent-projects.json"
   keep_history: true
 
 runtime:

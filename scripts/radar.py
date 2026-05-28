@@ -223,22 +223,65 @@ def passes_filters(repo, m, cfg):
 
 
 # ----------------------------------------------------------------------
+# 已发送项目状态：避免重复发送同一个仓库
+# ----------------------------------------------------------------------
+def sent_state_path(cfg):
+    filename = cfg["report"].get("sent_state_file", "sent-projects.json")
+    return Path(cfg["report"]["output_dir"]) / filename
+
+
+def load_sent_projects(path):
+    path = Path(path)
+    if not path.exists():
+        return set()
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return {str(item) for item in data}
+
+
+def save_sent_projects(path, projects):
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(sorted(projects), ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+
+def filter_unsent_ranked(ranked, sent_projects):
+    return [
+        (repo, metrics, sc)
+        for repo, metrics, sc in ranked
+        if repo["full_name"] not in sent_projects
+    ]
+
+
+# ----------------------------------------------------------------------
 # 报告生成
 # ----------------------------------------------------------------------
-def make_report(ranked, cfg):
+def make_report(ranked, cfg, evaluated_count=None, skipped_sent_count=0):
     now = dt.datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
+    evaluated = len(ranked) if evaluated_count is None else evaluated_count
     lines = [
         f"# 🛰️ GitHub AI Coding Radar — {now}",
         "",
         f"扫描范围: `{', '.join(cfg['search']['topics'])}`",
-        f"共评估候选 {len(ranked)} 个，下列为综合评分 Top {min(cfg['report']['top_n'], len(ranked))}。",
+        f"共评估候选 {evaluated} 个，已过滤历史发送项目 {skipped_sent_count} 个。",
         "",
         "评分综合考虑：近 7 天 star 增速、近 30 天 commit 活跃度、"
         "star 总量、贡献者数、文档完整度。",
         "",
-        "| # | 项目 | ⭐ | 7d↑ | commits/30d | 贡献者 | 评分 | 简介 |",
-        "|---|------|----|----|----|----|----|------|",
     ]
+    if not ranked:
+        lines += [
+            "本次没有发现新的合适项目；历史已发送项目不会重复出现在报告中。",
+        ]
+    else:
+        lines += [
+            f"下列为本次新增项目综合评分 Top {min(cfg['report']['top_n'], len(ranked))}。",
+            "",
+            "| # | 项目 | ⭐ | 7d↑ | commits/30d | 贡献者 | 评分 | 简介 |",
+            "|---|------|----|----|----|----|----|------|",
+        ]
     for i, (repo, m, sc) in enumerate(ranked[:cfg["report"]["top_n"]], 1):
         desc = (repo.get("description") or "").replace("|", "\\|")[:90]
         lines.append(
@@ -258,13 +301,18 @@ def make_report(ranked, cfg):
     return "\n".join(lines)
 
 
-def write_report(content, cfg):
+def write_report(content, cfg, ranked=None):
     out = Path(cfg["report"]["output_dir"])
     out.mkdir(parents=True, exist_ok=True)
     stamp = dt.datetime.now(UTC).strftime("%Y-%m-%d")
     if cfg["report"]["keep_history"]:
         (out / f"radar-{stamp}.md").write_text(content, encoding="utf-8")
     (out / "latest.md").write_text(content, encoding="utf-8")
+    if ranked is not None:
+        state_path = sent_state_path(cfg)
+        sent = load_sent_projects(state_path)
+        sent.update(repo["full_name"] for repo, _, _ in ranked[:cfg["report"]["top_n"]])
+        save_sent_projects(state_path, sent)
     print(f"  报告已写入 {out}/latest.md")
 
 
@@ -306,9 +354,20 @@ def main():
     ranked.sort(key=lambda x: x[2], reverse=True)
     print(f"  通过过滤 {len(ranked)} 个")
 
+    sent_projects = load_sent_projects(sent_state_path(cfg))
+    unsent_ranked = filter_unsent_ranked(ranked, sent_projects)
+    skipped_sent_count = len(ranked) - len(unsent_ranked)
+    if skipped_sent_count:
+        print(f"  已跳过历史发送项目 {skipped_sent_count} 个")
+
     print("→ 生成报告 ...")
-    report = make_report(ranked, cfg)
-    write_report(report, cfg)
+    report = make_report(
+        unsent_ranked,
+        cfg,
+        evaluated_count=len(ranked),
+        skipped_sent_count=skipped_sent_count,
+    )
+    write_report(report, cfg, unsent_ranked)
     print("✓ 完成")
 
 

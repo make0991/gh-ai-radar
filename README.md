@@ -13,6 +13,9 @@
 评分公式同时考虑：近 7 天 star 增速（权重最高）、近 30 天 commit 活跃度、
 star 总量（取对数防碾压）、贡献者数、文档完整度。权重都在 `config.yaml` 里可调。
 
+报告会记录已发送过的项目到 `reports/sent-projects.json`。后续扫描会跳过这些项目；
+如果当天没有新的合适项目，报告和邮件正文会直接说明。
+
 ## 快速开始
 
 1. **新建一个空仓库**（公开或私有都行），把本目录所有文件放进去。
@@ -41,6 +44,7 @@ cat reports/latest.md
 | 放宽或收紧质量门槛 | `filters.*`（star 阈值、活跃天数、最少贡献者）|
 | 改变“什么算高质量” | `scoring.*` 权重 |
 | 改报告条数 | `report.top_n` |
+| 重置已发送去重记录 | 清空或删除 `reports/sent-projects.json` |
 | 改运行频率 | `.github/workflows/radar.yml` 里的 `cron` |
 
 **几个常见调法举例：**
@@ -78,5 +82,6 @@ cat reports/latest.md
 ├── .github/workflows/radar.yml    # 定时任务 + 自动提交
 └── reports/                       # 自动生成
     ├── latest.md
-    └── radar-YYYY-MM-DD.md
+    ├── radar-YYYY-MM-DD.md
+    └── sent-projects.json         # 已发送项目记录，避免重复邮件
 ```
