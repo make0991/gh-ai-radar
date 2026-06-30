@@ -1,6 +1,7 @@
 [
   "0xSteph/pentest-ai",
   "0xhimanshu/governor",
+  "854875058/Symbio",
   "AEON-7/Qwen3.6-27B-AEON-Ultimate-Uncensored-DFlash",
   "AIScientists-Dev/Flowtrace",
   "AIScientists-Dev/WorldSeed",
@@ -216,6 +217,7 @@
   "inhouseseo/superseo-skills",
   "inkeep/open-knowledge",
   "itayinbarr/little-coder",
+  "itmisx/deepx-code",
   "jackwener/OpenCLI",
   "jdevalk/specification.website",
   "jdubois/boot-ui",
@@ -290,6 +292,7 @@
   "royalbhati/sqltoerdiagram",
   "run-llama/ParseBench",
   "ruvnet/agent-harness-generator",
+  "ruvnet/metaharness",
   "ryantsai/KKTerm",
   "santifer/career-ops",
   "scheidydude/codeindex",
