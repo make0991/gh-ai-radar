@@ -305,6 +305,7 @@
   "dmae97/oh-my-kimi",
   "dmae97/open-multi-agent-kit",
   "do-md/domd",
+  "dob323/session-kit",
   "dodo-reach/hermes-desktop",
   "dog-qiuqiu/invincat",
   "dohooo/helmor",
@@ -380,6 +381,7 @@
   "jdevalk/specification.website",
   "jdubois/boot-ui",
   "jia-gao/leanctx",
+  "jiabaobei/skills-constitution",
   "jinm29/ai-healthcare-app",
   "jmfederico/pi-web",
   "jo-inc/camofox-browser",
@@ -425,6 +427,7 @@
   "microsoft/SwiftStreamingMarkdown",
   "mikehasa/agentacct",
   "mindmuxai/brain.md",
+  "mindscale-noah/MindMemOS",
   "mingchen666/Reviva",
   "minicoohei/ai-agent-camp",
   "mirror29/inalpha",
@@ -586,6 +589,7 @@
   "xrpcommunity/XRP-community-wallet",
   "xuzhougeng/wisp-science",
   "xyTom/coding-tools-mcp",
+  "yan5xu/codexloom",
   "yanliudesign/offer-toolkit-skill",
   "yashab-cyber/opendroid",
   "yb2460/harness-anything",
@@ -601,5 +605,7 @@
   "zhayujie/CowAgent",
   "zhitongblog/solomd",
   "zhnt/loushang",
-  "zhu1090093659/deepseek-pp"
+  "zhoushoujianwork/easyeda-agent",
+  "zhu1090093659/deepseek-pp",
+  "zouyuxuan122/Deepseek-Harness-EAC"
 ]
