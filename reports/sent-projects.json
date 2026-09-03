@@ -103,6 +103,7 @@
   "JetBrains/thinkrail",
   "Jia-Ethan/claude-keysmith",
   "Jia-Ethan/codex-keysmith",
+  "Jia-Ethan/grok-keysmith",
   "Johell1NS/browser-search",
   "Junliu1066/vibe-coding-kit",
   "KSroido/Kagi-Session2API-MCP",
@@ -212,6 +213,7 @@
   "VasiHemanth/tokentelemetry",
   "VectifyAI/OpenKB",
   "VibeBench/VibeSearchBench",
+  "Vincentwei1021/video-talkcraft",
   "WenyuChiou/awesome-agentic-ai-zh",
   "Wholiver/metis",
   "William-Lu-stack/Flawless",
@@ -350,6 +352,7 @@
   "douglasmonsky/codex-usage-tracker",
   "duckbugio/flock",
   "duncatzat/vigils",
+  "duty1g/x64dbg-mcp-server",
   "e2b-dev/E2B",
   "edaywalid/undo",
   "elara-labs/code-context-engine",
@@ -379,6 +382,7 @@
   "fuxicodex/Fuxi",
   "fy-agent/fyagent",
   "gakonst/nanocodex",
+  "genspark-ai/genoffice",
   "getagentseal/codeburn",
   "getcrew44/crew44",
   "ggghjj3bk-netizen/cascade-protocol-dissector",
@@ -638,6 +642,7 @@
   "walkinglabs/learn-harness-engineering",
   "wanghuan9/skill-manager",
   "wanmol/goal-flow",
+  "wanshuiyin/HERO-Anti-OverDefense",
   "wellingfeng/FreeUltraCode",
   "wellingfeng/UltraGameStudio",
   "wilfredinni/noodle",
@@ -673,5 +678,6 @@
   "zhoushoujianwork/easyeda-agent",
   "zhu1090093659/deepseek-pp",
   "zouyuxuan122/DSH-Desktop-EAC",
-  "zouyuxuan122/Deepseek-Harness-EAC"
+  "zouyuxuan122/Deepseek-Harness-EAC",
+  "zvec-ai/zvec-grep"
 ]
